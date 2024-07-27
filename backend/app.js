@@ -6,12 +6,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 app.use(cors({
-  origin: ['https://e-shop-3yun.vercel.app/',],
+  origin: ['https://e-shop-3yun.vercel.app',],
   credentials: true
 }));
 
 app.use(express.json());
 app.use(cookieParser());
+app.use("/", express.static(path.join(__dirname, "./uploads")))
 app.use("/test", (req, res) => {
   res.send("Hello world!");
 });
