@@ -1,92 +1,92 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { DataGrid } from "@material-ui/data-grid";
-import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
-import { Button } from "@material-ui/core";
-import styles from "../../styles/styles";
-import { RxCross1 } from "react-icons/rx";
-import axios from "axios";
-import { server } from "../../server";
-import { toast } from "react-toastify";
-import { getAllSellers } from "../../redux/actions/sellers";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { DataGrid } from '@mui/x-data-grid'
+import { AiOutlineDelete, AiOutlineEye } from 'react-icons/ai'
+import { Button } from '@mui/material'
+import styles from '../../styles/styles'
+import { RxCross1 } from 'react-icons/rx'
+import axios from 'axios'
+import { server } from '../../server'
+import { toast } from 'react-toastify'
+import { getAllSellers } from '../../redux/actions/sellers'
+import { Link } from 'react-router-dom'
 
 const AllSellers = () => {
-  const dispatch = useDispatch();
-  const { sellers } = useSelector((state) => state.seller);
-  const [open, setOpen] = useState(false);
-  const [userId, setUserId] = useState("");
+  const dispatch = useDispatch()
+  const { sellers } = useSelector((state) => state.seller)
+  const [open, setOpen] = useState(false)
+  const [userId, setUserId] = useState('')
 
   useEffect(() => {
-    dispatch(getAllSellers());
-  }, [dispatch]);
+    dispatch(getAllSellers())
+  }, [dispatch])
 
   const handleDelete = async (id) => {
     await axios
-    .delete(`${server}/shop/delete-seller/${id}`, { withCredentials: true })
-    .then((res) => {
-      toast.success(res.data.message);
-    });
+      .delete(`${server}/shop/delete-seller/${id}`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message)
+      })
 
-  dispatch(getAllSellers());
-  };
+    dispatch(getAllSellers())
+  }
 
   const columns = [
-    { field: "id", headerName: "Seller ID", minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'Seller ID', minWidth: 150, flex: 0.7 },
 
     {
-      field: "name",
-      headerName: "name",
+      field: 'name',
+      headerName: 'name',
       minWidth: 130,
       flex: 0.7,
     },
     {
-      field: "email",
-      headerName: "Email",
-      type: "text",
+      field: 'email',
+      headerName: 'Email',
+      type: 'text',
       minWidth: 130,
       flex: 0.7,
     },
     {
-      field: "address",
-      headerName: "Seller Address",
-      type: "text",
+      field: 'address',
+      headerName: 'Seller Address',
+      type: 'text',
       minWidth: 130,
       flex: 0.7,
     },
 
     {
-      field: "joinedAt",
-      headerName: "joinedAt",
-      type: "text",
+      field: 'joinedAt',
+      headerName: 'joinedAt',
+      type: 'text',
       minWidth: 130,
       flex: 0.8,
     },
     {
-        field: "  ",
-        flex: 1,
-        minWidth: 150,
-        headerName: "Preview Shop",
-        type: "number",
-        sortable: false,
-        renderCell: (params) => {
-          return (
-            <>
+      field: '  ',
+      flex: 1,
+      minWidth: 150,
+      headerName: 'Preview Shop',
+      type: 'number',
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
             <Link to={`/shop/preview/${params.id}`}>
-            <Button>
+              <Button>
                 <AiOutlineEye size={20} />
               </Button>
             </Link>
-            </>
-          );
-        },
+          </>
+        )
       },
+    },
     {
-      field: " ",
+      field: ' ',
       flex: 1,
       minWidth: 150,
-      headerName: "Delete Seller",
-      type: "number",
+      headerName: 'Delete Seller',
+      type: 'number',
       sortable: false,
       renderCell: (params) => {
         return (
@@ -95,22 +95,22 @@ const AllSellers = () => {
               <AiOutlineDelete size={20} />
             </Button>
           </>
-        );
+        )
       },
     },
-  ];
+  ]
 
-  const row = [];
+  const row = []
   sellers &&
-  sellers.forEach((item) => {
+    sellers.forEach((item) => {
       row.push({
         id: item._id,
         name: item?.name,
         email: item?.email,
         joinedAt: item.createdAt.slice(0, 10),
         address: item.address,
-      });
-    });
+      })
+    })
 
   return (
     <div className="w-full flex justify-center pt-5">
@@ -143,7 +143,7 @@ const AllSellers = () => {
                 </div>
                 <div
                   className={`${styles.button} text-white text-[18px] !h-[42px] ml-4`}
-                  onClick={() =>  setOpen(false) || handleDelete(userId)}
+                  onClick={() => setOpen(false) || handleDelete(userId)}
                 >
                   confirm
                 </div>
@@ -153,7 +153,7 @@ const AllSellers = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AllSellers;
+export default AllSellers
