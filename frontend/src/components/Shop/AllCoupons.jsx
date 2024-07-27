@@ -1,53 +1,55 @@
-import { Button } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
-import { RxCross1 } from "react-icons/rx";
-import { useDispatch, useSelector } from "react-redux";
-import styles from "../../styles/styles";
-import Loader from "../Layout/Loader";
-import { server } from "../../server";
-import { toast } from "react-toastify";
+import { Button } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { AiOutlineDelete } from 'react-icons/ai'
+import { RxCross1 } from 'react-icons/rx'
+import { useDispatch, useSelector } from 'react-redux'
+import styles from '../../styles/styles'
+import Loader from '../Layout/Loader'
+import { server } from '../../server'
+import { toast } from 'react-toastify'
 
 const AllCoupons = () => {
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [coupouns,setCoupouns] = useState([]);
-  const [minAmount, setMinAmout] = useState(null);
-  const [maxAmount, setMaxAmount] = useState(null);
-  const [selectedProducts, setSelectedProducts] = useState(null);
-  const [value, setValue] = useState(null);
-  const { seller } = useSelector((state) => state.seller);
-  const { products } = useSelector((state) => state.products);
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [coupouns, setCoupouns] = useState([])
+  const [minAmount, setMinAmout] = useState(null)
+  const [maxAmount, setMaxAmount] = useState(null)
+  const [selectedProducts, setSelectedProducts] = useState(null)
+  const [value, setValue] = useState(null)
+  const { seller } = useSelector((state) => state.seller)
+  const { products } = useSelector((state) => state.products)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true)
     axios
       .get(`${server}/coupon/get-coupon/${seller._id}`, {
         withCredentials: true,
       })
       .then((res) => {
-        setIsLoading(false);
-        setCoupouns(res.data.couponCodes);
+        setIsLoading(false)
+        setCoupouns(res.data.couponCodes)
       })
       .catch((error) => {
-        setIsLoading(false);
-      });
-  }, [dispatch]);
+        setIsLoading(false)
+      })
+  }, [dispatch])
 
   const handleDelete = async (id) => {
-    axios.delete(`${server}/coupon/delete-coupon/${id}`,{withCredentials: true}).then((res) => {
-      toast.success("Coupon code deleted succesfully!")
-    })
-    window.location.reload();
-  };
+    axios
+      .delete(`${server}/coupon/delete-coupon/${id}`, { withCredentials: true })
+      .then((res) => {
+        toast.success('Coupon code deleted succesfully!')
+      })
+    window.location.reload()
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     await axios
       .post(
@@ -63,35 +65,35 @@ const AllCoupons = () => {
         { withCredentials: true }
       )
       .then((res) => {
-       toast.success("Coupon code created successfully!");
-       setOpen(false);
-       window.location.reload();
+        toast.success('Coupon code created successfully!')
+        setOpen(false)
+        window.location.reload()
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
-      });
-  };
+        toast.error(error.response.data.message)
+      })
+  }
 
   const columns = [
-    { field: "id", headerName: "Id", minWidth: 150, flex: 0.7 },
+    { field: 'id', headerName: 'Id', minWidth: 150, flex: 0.7 },
     {
-      field: "name",
-      headerName: "Coupon Code",
+      field: 'name',
+      headerName: 'Coupon Code',
       minWidth: 180,
       flex: 1.4,
     },
     {
-      field: "price",
-      headerName: "Value",
+      field: 'price',
+      headerName: 'Value',
       minWidth: 100,
       flex: 0.6,
     },
     {
-      field: "Delete",
+      field: 'Delete',
       flex: 0.8,
       minWidth: 120,
-      headerName: "",
-      type: "number",
+      headerName: '',
+      type: 'number',
       sortable: false,
       renderCell: (params) => {
         return (
@@ -100,22 +102,22 @@ const AllCoupons = () => {
               <AiOutlineDelete size={20} />
             </Button>
           </>
-        );
+        )
       },
     },
-  ];
+  ]
 
-  const row = [];
+  const row = []
 
   coupouns &&
-  coupouns.forEach((item) => {
+    coupouns.forEach((item) => {
       row.push({
         id: item._id,
         name: item.name,
-        price: item.value + " %",
+        price: item.value + ' %',
         sold: 10,
-      });
-    });
+      })
+    })
 
   return (
     <>
@@ -171,7 +173,7 @@ const AllCoupons = () => {
                   <br />
                   <div>
                     <label className="pb-2">
-                      Discount Percentenge{" "}
+                      Discount Percentenge{' '}
                       <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -242,7 +244,7 @@ const AllCoupons = () => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default AllCoupons;
+export default AllCoupons
